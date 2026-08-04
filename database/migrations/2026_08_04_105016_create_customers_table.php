@@ -13,6 +13,31 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_code')->unique();
+
+            $table->string('name');
+
+            $table->string('email')->unique();
+
+            $table->string('phone',20);
+
+            $table->string('company_name')->nullable();
+
+            $table->string('gst_number')->nullable();
+
+            $table->text('address')->nullable();
+
+            $table->string('city')->nullable();
+
+            $table->string('state')->nullable();
+
+            $table->string('country')->default('India');
+
+            $table->string('pincode',10)->nullable();
+
+            $table->enum('status',['Active','Inactive'])->default('Active');
+
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
