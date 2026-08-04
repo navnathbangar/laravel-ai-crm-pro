@@ -24,6 +24,20 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard');
 
     Route::resource('/customers',CustomerController::class);
+    Route::get('/customers-trash',
+        [CustomerController::class,'trash'])
+        ->name('customers.trash');
+    Route::post('/customers/{id}/restore',
+        [CustomerController::class,'restore'])
+        ->name('customers.restore');
+    Route::delete('customers/{id}/force-delete',
+        [CustomerController::class,'forceDelete'])
+        ->name('customers.forceDelete');
+    Route::get('/customers/export/excel',
+        [CustomerController::class,'exportExcel'])
+        ->name('customers.export.excel');
+    Route::get('/customers/export/pdf',
+        [CustomerController::class,'exportPdf'])->name('customers.export.pdf');
 
     Route::resource('/companies',CompanyController::class);
 
