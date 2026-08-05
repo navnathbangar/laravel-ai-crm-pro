@@ -39,7 +39,32 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/export/pdf',
         [CustomerController::class,'exportPdf'])->name('customers.export.pdf');
 
-    Route::resource('/companies',CompanyController::class);
+
+    Route::resource('companies', CompanyController::class);
+    Route::get(
+        'companies-trash',
+        [CompanyController::class,'trash']
+    )->name('companies.trash');
+
+    Route::post(
+        'companies/{id}/restore',
+        [CompanyController::class,'restore']
+    )->name('companies.restore');
+
+    Route::delete(
+        'companies/{id}/force-delete',
+        [CompanyController::class,'forceDelete']
+    )->name('companies.forceDelete');
+
+    Route::get(
+        'companies-export-excel',
+        [CompanyController::class,'exportExcel']
+    )->name('companies.export.excel');
+
+    Route::get(
+        'companies-export-pdf',
+        [CompanyController::class,'exportPdf']
+    )->name('companies.export.pdf');
 
     Route::resource('/products',ProductController::class);
 
