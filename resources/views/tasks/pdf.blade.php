@@ -1,40 +1,93 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
 
-    <title>Products Report</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Tasks Report</title>
 
     <style>
 
         body{
+
             font-family: DejaVu Sans, sans-serif;
-            font-size:12px;
+
+            font-size: 12px;
+
+            color:#333;
+
         }
 
         h2{
+
             text-align:center;
+
+            margin-bottom:5px;
+
+        }
+
+        p{
+
+            text-align:center;
+
+            margin-top:0;
+
+            margin-bottom:15px;
+
+            font-size:11px;
+
         }
 
         table{
+
             width:100%;
+
             border-collapse:collapse;
+
         }
 
-        table th,
-        table td{
+        th{
+
+            background:#f3f4f6;
 
             border:1px solid #000;
 
-            padding:6px;
+            padding:8px;
 
             text-align:left;
 
         }
 
-        table th{
+        td{
 
-            background:#eeeeee;
+            border:1px solid #000;
+
+            padding:8px;
+
+        }
+
+        .text-center{
+
+            text-align:center;
+
+        }
+
+        .footer{
+
+            position:fixed;
+
+            bottom:-20px;
+
+            left:0;
+
+            right:0;
+
+            text-align:center;
+
+            font-size:10px;
+
+            color:#666;
 
         }
 
@@ -44,89 +97,122 @@
 
 <body>
 
-<h2>Products Report</h2>
+    <h2>Task Management Report</h2>
 
-@if($search)
+    <p>
 
-<p>
+        Generated On :
+        {{ now()->format('d-m-Y h:i A') }}
 
-Search :
+    </p>
 
-<strong>{{ $search }}</strong>
+    <table>
 
-</p>
+        <thead>
 
-@endif
+            <tr>
 
-<table>
+                <th>#</th>
 
-<thead>
+                <th>Task Code</th>
 
-<tr>
+                <th>Title</th>
 
-<th>#</th>
+                <th>Assigned To</th>
 
-<th>SKU</th>
+                <th>Priority</th>
 
-<th>Product</th>
+                <th>Status</th>
 
-<th>Category</th>
+                <th>Start Date</th>
 
-<th>Brand</th>
+                <th>Due Date</th>
 
-<th>Cost</th>
+            </tr>
 
-<th>Price</th>
+        </thead>
 
-<th>Stock</th>
+        <tbody>
 
-<th>Status</th>
+            @forelse($tasks as $task)
 
-</tr>
+                <tr>
 
-</thead>
+                    <td class="text-center">
 
-<tbody>
+                        {{ $loop->iteration }}
 
-@foreach($products as $product)
+                    </td>
 
-<tr>
+                    <td>
 
-<td>{{ $loop->iteration }}</td>
+                        {{ $task->task_code }}
 
-<td>{{ $product->sku }}</td>
+                    </td>
 
-<td>{{ $product->product_name }}</td>
+                    <td>
 
-<td>{{ $product->category }}</td>
+                        {{ $task->title }}
 
-<td>{{ $product->brand }}</td>
+                    </td>
 
-<td>{{ number_format($product->cost_price,2) }}</td>
+                    <td>
 
-<td>{{ number_format($product->selling_price,2) }}</td>
+                        {{ $task->assigned_to }}
 
-<td>{{ $product->stock }}</td>
+                    </td>
 
-<td>{{ $product->status }}</td>
+                    <td>
 
-</tr>
+                        {{ $task->priority }}
 
-@endforeach
+                    </td>
 
-</tbody>
+                    <td>
 
-</table>
+                        {{ $task->status }}
 
-<br>
+                    </td>
 
-<p>
+                    <td>
 
-Total Products :
+                        {{ optional($task->start_date)->format('d-m-Y') }}
 
-<strong>{{ $products->count() }}</strong>
+                    </td>
 
-</p>
+                    <td>
+
+                        {{ optional($task->due_date)->format('d-m-Y') }}
+
+                    </td>
+
+                </tr>
+
+            @empty
+
+                <tr>
+
+                    <td colspan="8" class="text-center">
+
+                        No Tasks Found
+
+                    </td>
+
+                </tr>
+
+            @endforelse
+
+        </tbody>
+
+    </table>
+
+    <div class="footer">
+
+        Laravel AI CRM Pro |
+        Task Management Report |
+        Page {PAGE_NUM} of {PAGE_COUNT}
+
+    </div>
 
 </body>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\TaskController;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -123,7 +124,32 @@ Route::middleware('auth')->group(function () {
     )
     ->name('leads.export.pdf');
 
-    Route::resource('/tasks',TaskController::class);
+    Route::resource('tasks', TaskController::class)->except('show');
+
+    Route::get(
+        'tasks/trash',
+        [TaskController::class, 'trash']
+    )->name('tasks.trash');
+
+    Route::post(
+        'tasks/{id}/restore',
+        [TaskController::class, 'restore']
+    )->name('tasks.restore');
+
+    Route::delete(
+        'tasks/{id}/force-delete',
+        [TaskController::class, 'forceDelete']
+    )->name('tasks.forceDelete');
+
+    Route::get(
+        'tasks-export-excel',
+        [TaskController::class, 'exportExcel']
+    )->name('tasks.export.excel');
+
+    Route::get(
+        'tasks-export-pdf',
+        [TaskController::class, 'exportPdf']
+    )->name('tasks.export.pdf');
 });
 
 require __DIR__.'/auth.php';

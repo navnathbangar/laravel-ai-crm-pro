@@ -1,191 +1,223 @@
 <x-app-layout>
 
-<x-slot name="header">
+    <x-slot name="header">
 
-<div class="flex justify-between items-center">
+        <div class="flex justify-between items-center">
 
-    <h2 class="text-2xl font-bold">
+            <h2 class="text-2xl font-bold">
 
-        Deleted Products
+                Deleted Tasks
 
-    </h2>
+            </h2>
 
-    <a href="{{ route('products.index') }}"
-       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
+            <a href="{{ route('tasks.index') }}"
+               class="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 rounded">
 
-        Back
+                Back
 
-    </a>
+            </a>
 
-</div>
+        </div>
 
-</x-slot>
+    </x-slot>
 
-<div class="py-8">
+    <div class="py-8">
 
-<div class="max-w-7xl mx-auto">
+        <div class="max-w-7xl mx-auto">
 
-@if(session('success'))
+            <div class="bg-white shadow rounded-lg">
 
-<div class="bg-green-100 text-green-700 p-4 rounded mb-5">
+                <div class="p-6">
 
-    {{ session('success') }}
+                    @if(session('success'))
 
-</div>
+                        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
 
-@endif
+                            {{ session('success') }}
 
-<div class="bg-white shadow rounded-lg overflow-hidden">
+                        </div>
 
-<table class="min-w-full">
+                    @endif
 
-<thead class="bg-gray-100">
+                    <div class="overflow-x-auto">
 
-<tr>
+                        <table class="min-w-full border">
 
-<th class="p-3">Image</th>
+                            <thead class="bg-gray-100">
 
-<th>SKU</th>
+                                <tr>
 
-<th>Name</th>
+                                    <th class="border px-3 py-2">#</th>
 
-<th>Category</th>
+                                    <th class="border px-3 py-2">Task Code</th>
 
-<th>Brand</th>
+                                    <th class="border px-3 py-2">Title</th>
 
-<th>Status</th>
+                                    <th class="border px-3 py-2">Assigned To</th>
 
-<th width="220">Action</th>
+                                    <th class="border px-3 py-2">Priority</th>
 
-</tr>
+                                    <th class="border px-3 py-2">Status</th>
 
-</thead>
+                                    <th class="border px-3 py-2">Deleted At</th>
 
-<tbody>
+                                    <th class="border px-3 py-2 text-center">
 
-@forelse($products as $product)
+                                        Action
 
-<tr class="border-b hover:bg-gray-50">
+                                    </th>
 
-<td class="p-3">
+                                </tr>
 
-@if($product->image)
+                            </thead>
 
-<img src="{{ $product->image_url }}"
-     class="w-14 h-14 rounded object-cover">
+                            <tbody>
 
-@else
+                                @forelse($tasks as $task)
 
-No Image
+                                    <tr>
 
-@endif
+                                        <td class="border p-3">
 
-</td>
+                                            {{ $task->id }}
 
-<td>
+                                        </td>
 
-{{ $product->sku }}
+                                        <td class="border p-3">
 
-</td>
+                                            {{ $task->task_code }}
 
-<td>
+                                        </td>
 
-{{ $product->product_name }}
+                                        <td class="border p-3">
 
-</td>
+                                            {{ $task->title }}
 
-<td>
+                                        </td>
 
-{{ $product->category }}
+                                        <td class="border p-3">
 
-</td>
+                                            {{ $task->assigned_to }}
 
-<td>
+                                        </td>
 
-{{ $product->brand }}
+                                        <td class="border p-3">
 
-</td>
+                                            @if($task->priority=='High')
 
-<td>
+                                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded">
 
-{{ $product->status }}
+                                                    High
 
-</td>
+                                                </span>
 
-<td>
+                                            @elseif($task->priority=='Medium')
 
-<div class="flex gap-2">
+                                                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
 
-<form
-action="{{ route('products.restore',$product->id) }}"
-method="POST">
+                                                    Medium
 
-@csrf
+                                                </span>
 
-<button
-class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
+                                            @else
 
-Restore
+                                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded">
 
-</button>
+                                                    Low
 
-</form>
+                                                </span>
 
-<form
-action="{{ route('products.forceDelete',$product->id) }}"
-method="POST">
+                                            @endif
 
-@csrf
+                                        </td>
 
-@method('DELETE')
+                                        <td class="border p-3">
 
-<button
+                                            {{ $task->status }}
 
-onclick="return confirm('Delete Permanently?')"
+                                        </td>
 
-class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded">
+                                        <td class="border p-3">
 
-Delete Forever
+                                            {{ $task->deleted_at->format('d-m-Y H:i') }}
 
-</button>
+                                        </td>
 
-</form>
+                                        <td class="border p-3 text-center">
 
-</div>
+                                            <form
+                                                action="{{ route('tasks.restore',$task->id) }}"
+                                                method="POST"
+                                                class="inline">
 
-</td>
+                                                @csrf
 
-</tr>
+                                                <button
+                                                    onclick="return confirm('Restore this task?')"
+                                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">
 
-@empty
+                                                    Restore
 
-<tr>
+                                                </button>
 
-<td colspan="7"
-class="text-center py-6">
+                                            </form>
 
-No Deleted Products Found
+                                            <form
+                                                action="{{ route('tasks.forceDelete',$task->id) }}"
+                                                method="POST"
+                                                class="inline">
 
-</td>
+                                                @csrf
 
-</tr>
+                                                @method('DELETE')
 
-@endforelse
+                                                <button
+                                                    onclick="return confirm('Permanently delete this task?')"
+                                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded ml-2">
 
-</tbody>
+                                                    Delete Permanently
 
-</table>
+                                                </button>
 
-</div>
+                                            </form>
 
-<div class="mt-5">
+                                        </td>
 
-{{ $products->links() }}
+                                    </tr>
 
-</div>
+                                @empty
 
-</div>
+                                    <tr>
 
-</div>
+                                        <td colspan="8"
+                                            class="text-center py-6">
+
+                                            No Deleted Tasks Found
+
+                                        </td>
+
+                                    </tr>
+
+                                @endforelse
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="mt-5">
+
+                        {{ $tasks->links() }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </x-app-layout>

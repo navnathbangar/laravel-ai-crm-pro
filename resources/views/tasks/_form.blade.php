@@ -1,179 +1,186 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    {{-- SKU --}}
     <div>
-        <label class="block font-medium mb-1">SKU</label>
-        <input type="text"
-               name="sku"
-               value="{{ old('sku', $product->sku ?? '') }}"
-               class="w-full rounded border-gray-300">
-        @error('sku')
+        <label class="block font-medium">
+            Task Code <span class="text-red-500">*</span>
+        </label>
+
+        <input
+            type="text"
+            name="task_code"
+            value="{{ old('task_code', $task->task_code ?? '') }}"
+            class="w-full border rounded-lg mt-1">
+
+        @error('task_code')
             <p class="text-red-500 text-sm">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Barcode --}}
     <div>
-        <label class="block font-medium mb-1">Barcode</label>
-        <input type="text"
-               name="barcode"
-               value="{{ old('barcode', $product->barcode ?? '') }}"
-               class="w-full rounded border-gray-300">
-        @error('barcode')
+        <label class="block font-medium">
+            Task Title <span class="text-red-500">*</span>
+        </label>
+
+        <input
+            type="text"
+            name="title"
+            value="{{ old('title', $task->title ?? '') }}"
+            class="w-full border rounded-lg mt-1">
+
+        @error('title')
             <p class="text-red-500 text-sm">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Product Name --}}
     <div>
-        <label class="block font-medium mb-1">Product Name <span class="text-red-500">*</span></label>
-        <input type="text"
-               name="product_name"
-               value="{{ old('product_name', $product->product_name ?? '') }}"
-               class="w-full rounded border-gray-300"
-               required>
-        @error('product_name')
+        <label class="block font-medium">
+            Assigned To
+        </label>
+
+        <input
+            type="text"
+            name="assigned_to"
+            value="{{ old('assigned_to', $task->assigned_to ?? '') }}"
+            class="w-full border rounded-lg mt-1">
+
+        @error('assigned_to')
             <p class="text-red-500 text-sm">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Category --}}
     <div>
-        <label class="block font-medium mb-1">Category</label>
-        <input type="text"
-               name="category"
-               value="{{ old('category', $product->category ?? '') }}"
-               class="w-full rounded border-gray-300">
-    </div>
+        <label class="block font-medium">
+            Priority <span class="text-red-500">*</span>
+        </label>
 
-    {{-- Brand --}}
-    <div>
-        <label class="block font-medium mb-1">Brand</label>
-        <input type="text"
-               name="brand"
-               value="{{ old('brand', $product->brand ?? '') }}"
-               class="w-full rounded border-gray-300">
-    </div>
+        <select
+            name="priority"
+            class="w-full border rounded-lg mt-1">
 
-    {{-- Unit --}}
-    <div>
-        <label class="block font-medium mb-1">Unit</label>
+            @foreach(['Low','Medium','High'] as $priority)
 
-        <select name="unit" class="w-full rounded border-gray-300">
+                <option
+                    value="{{ $priority }}"
+                    {{ old('priority', $task->priority ?? 'Medium') == $priority ? 'selected' : '' }}>
 
-            @foreach(['PCS','KG','Box','Litre'] as $unit)
+                    {{ $priority }}
 
-                <option value="{{ $unit }}"
-                    {{ old('unit', $product->unit ?? 'PCS') == $unit ? 'selected' : '' }}>
-                    {{ $unit }}
                 </option>
 
             @endforeach
 
         </select>
 
+        @error('priority')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
     </div>
 
-    {{-- Cost Price --}}
     <div>
-        <label class="block font-medium mb-1">Cost Price</label>
-        <input type="number"
-               step="0.01"
-               name="cost_price"
-               value="{{ old('cost_price', $product->cost_price ?? 0) }}"
-               class="w-full rounded border-gray-300">
-    </div>
+        <label class="block font-medium">
+            Status <span class="text-red-500">*</span>
+        </label>
 
-    {{-- Selling Price --}}
-    <div>
-        <label class="block font-medium mb-1">Selling Price</label>
-        <input type="number"
-               step="0.01"
-               name="selling_price"
-               value="{{ old('selling_price', $product->selling_price ?? 0) }}"
-               class="w-full rounded border-gray-300">
-    </div>
+        <select
+            name="status"
+            class="w-full border rounded-lg mt-1">
 
-    {{-- Stock --}}
-    <div>
-        <label class="block font-medium mb-1">Stock</label>
-        <input type="number"
-               name="stock"
-               value="{{ old('stock', $product->stock ?? 0) }}"
-               class="w-full rounded border-gray-300">
-    </div>
+            @foreach([
+                'Pending',
+                'In Progress',
+                'Completed',
+                'Cancelled'
+            ] as $status)
 
-    {{-- Minimum Stock --}}
-    <div>
-        <label class="block font-medium mb-1">Minimum Stock</label>
-        <input type="number"
-               name="minimum_stock"
-               value="{{ old('minimum_stock', $product->minimum_stock ?? 5) }}"
-               class="w-full rounded border-gray-300">
-    </div>
+                <option
+                    value="{{ $status }}"
+                    {{ old('status', $task->status ?? 'Pending') == $status ? 'selected' : '' }}>
 
-    {{-- Status --}}
-    <div>
-        <label class="block font-medium mb-1">Status</label>
+                    {{ $status }}
 
-        <select name="status"
-                class="w-full rounded border-gray-300">
+                </option>
 
-            <option value="Active"
-                {{ old('status', $product->status ?? 'Active') == 'Active' ? 'selected' : '' }}>
-                Active
-            </option>
-
-            <option value="Inactive"
-                {{ old('status', $product->status ?? '') == 'Inactive' ? 'selected' : '' }}>
-                Inactive
-            </option>
+            @endforeach
 
         </select>
 
+        @error('status')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
     </div>
 
-    {{-- Product Image --}}
     <div>
-        <label class="block font-medium mb-1">Product Image</label>
+        <label class="block font-medium">
+            Start Date <span class="text-red-500">*</span>
+        </label>
 
-        <input type="file"
-               name="image"
-               class="w-full border rounded p-2">
+        <input
+            type="date"
+            name="start_date"
+            value="{{ old('start_date', isset($task) && $task->start_date ? $task->start_date->format('Y-m-d') : '') }}"
+            class="w-full border rounded-lg mt-1">
 
-        @if(isset($product) && $product->image)
-
-            <img src="{{ $product->image_url }}"
-                 class="w-24 h-24 mt-3 rounded border object-cover">
-
-        @endif
+        @error('start_date')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
     </div>
 
-</div>
+    <div>
+        <label class="block font-medium">
+            Due Date <span class="text-red-500">*</span>
+        </label>
 
-{{-- Description --}}
+        <input
+            type="date"
+            name="due_date"
+            value="{{ old('due_date', isset($task) && $task->due_date ? $task->due_date->format('Y-m-d') : '') }}"
+            class="w-full border rounded-lg mt-1">
 
-<div class="mt-6">
+        @error('due_date')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
+    </div>
 
-    <label class="block font-medium mb-1">
+    <div>
+        <label class="block font-medium">
+            Completed At
+        </label>
 
-        Description
+        <input
+            type="datetime-local"
+            name="completed_at"
+            value="{{ old('completed_at', isset($task) && $task->completed_at ? $task->completed_at->format('Y-m-d\TH:i') : '') }}"
+            class="w-full border rounded-lg mt-1">
 
-    </label>
+        @error('completed_at')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
+    </div>
 
-    <textarea
-        name="description"
-        rows="5"
-        class="w-full rounded border-gray-300">{{ old('description', $product->description ?? '') }}</textarea>
+    <div class="md:col-span-2">
+        <label class="block font-medium">
+            Description
+        </label>
+
+        <textarea
+            name="description"
+            rows="5"
+            class="w-full border rounded-lg mt-1">{{ old('description', $task->description ?? '') }}</textarea>
+
+        @error('description')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
+    </div>
 
 </div>
 
 <div class="mt-6">
 
     <button
+        type="submit"
         class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
 
-        Save Product
+        Save Task
 
     </button>
 

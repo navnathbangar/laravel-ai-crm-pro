@@ -1,15 +1,16 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="flex justify-between">
+
+        <div class="flex justify-between items-center">
 
             <h2 class="text-2xl font-bold">
 
-                Add Product
+                Add Task
 
             </h2>
 
-            <a href="{{ route('products.index') }}"
+            <a href="{{ route('tasks.index') }}"
                class="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 rounded">
 
                 Back
@@ -17,6 +18,7 @@
             </a>
 
         </div>
+
     </x-slot>
 
     <div class="py-8">
@@ -27,14 +29,31 @@
 
                 <div class="p-6">
 
+                    @if ($errors->any())
+
+                        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+
+                            <ul class="list-disc list-inside">
+
+                                @foreach ($errors->all() as $error)
+
+                                    <li>{{ $error }}</li>
+
+                                @endforeach
+
+                            </ul>
+
+                        </div>
+
+                    @endif
+
                     <form
-                        action="{{ route('products.store') }}"
-                        method="POST"
-                        enctype="multipart/form-data">
+                        action="{{ route('tasks.store') }}"
+                        method="POST">
 
                         @csrf
 
-                        @include('products._form')
+                        @include('tasks._form')
 
                     </form>
 
