@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
         [CompanyController::class,'exportPdf']
     )->name('companies.export.pdf');
 
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except(['show']);
 
     Route::get(
         'products/trash',

@@ -15,23 +15,31 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->search;
+        $query = Product::query();
+        if ($request->status) {
 
-        $products = Product::when($search, function ($query) use ($search) {
+            $query->where('status', $request->status);
 
-                $query->where('product_name', 'like', "%{$search}%")
-                    ->orWhere('sku', 'like', "%{$search}%")
-                    ->orWhere('barcode', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
-                    ->orWhere('brand', 'like', "%{$search}%");
+        }
+        if ($request->search) {
 
-            })
+            $query->where(function ($q) use ($request) {
 
+                $q->Where('product_name', 'like', '%'.$request->search.'%')
+                ->orWhere('sku', 'like', '%'.$request->search.'%')
+                ->orWhere('barcode', 'like', '%'.$request->search.'%')
+                ->orWhere('category', 'like', '%'.$request->search.'%')
+                ->orWhere('brand', 'like', '%'.$request->search.'%');
+
+            });
+
+        }
+
+        $products = $query
             ->latest()
-
             ->paginate(10)
-
             ->withQueryString();
+        $search = $request->search;        
 
         $totalProducts = Product::count();
 
@@ -82,6 +90,11 @@ class ProductController extends Controller
             ->route('products.index')
 
             ->with('success','Product created successfully.');
+    }
+
+    public function show(string $id)
+    {
+        //
     }
 
     public function edit(Product $product)
