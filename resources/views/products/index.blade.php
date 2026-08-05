@@ -2,7 +2,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Company Management
+            Product Management
         </h2>
     </x-slot>
 
@@ -13,33 +13,33 @@
 
                 <!-- Total Customers -->
                 <div class="bg-white rounded-lg shadow border-l-4 border-blue-500 p-5">
-                    <p class="text-gray-500 text-sm">Total Companies</p>
+                    <p class="text-gray-500 text-sm">Total Products</p>
                     <h2 class="text-3xl font-bold text-blue-600 mt-2">
-                        {{ $totalCompanies }}
+                        {{ $totalProducts }}
                     </h2>
                 </div>
 
                 <!-- Active Customers -->
                 <div class="bg-white rounded-lg shadow border-l-4 border-green-500 p-5">
-                    <p class="text-gray-500 text-sm">Active Companies</p>
+                    <p class="text-gray-500 text-sm">Active Products</p>
                     <h2 class="text-3xl font-bold text-green-600 mt-2">
-                        {{ $activeCompanies }}
+                        {{ $activeProducts }}
                     </h2>
                 </div>
 
                 <!-- Inactive Customers -->
                 <div class="bg-white rounded-lg shadow border-l-4 border-yellow-500 p-5">
-                    <p class="text-gray-500 text-sm">Inactive Companies</p>
+                    <p class="text-gray-500 text-sm">Inactive Products</p>
                     <h2 class="text-3xl font-bold text-yellow-500 mt-2">
-                        {{ $inactiveCompanies }}
+                        {{ $inactiveProducts }}
                     </h2>
                 </div>
 
                 <!-- Deleted Customers -->
                 <div class="bg-white rounded-lg shadow border-l-4 border-red-500 p-5">
-                    <p class="text-gray-500 text-sm">Deleted Companies</p>
+                    <p class="text-gray-500 text-sm">Deleted Products</p>
                     <h2 class="text-3xl font-bold text-red-600 mt-2">
-                        {{ $deletedCompanies }}
+                        {{ $deletedProducts }}
                     </h2>
                 </div>
 
@@ -47,22 +47,22 @@
 
             <div class="flex flex-wrap gap-3 mb-6">
 
-                <a href="{{ route('companies.index') }}"
+                <a href="{{ route('products.index') }}"
                     class="bg-gray-600 text-white px-4 py-2 rounded-lg">
                     All
                 </a>
 
-                <a href="{{ route('companies.index',['status'=>'Active']) }}"
+                <a href="{{ route('products.index',['status'=>'Active']) }}"
                     class="bg-green-600 text-white px-4 py-2 rounded-lg">
                     Active
                 </a>
 
-                <a href="{{ route('companies.index',['status'=>'Inactive']) }}"
+                <a href="{{ route('products.index',['status'=>'Inactive']) }}"
                     class="bg-yellow-500 text-white px-4 py-2 rounded-lg">
                     Inactive
                 </a>
 
-                <a href="{{ route('companies.trash') }}"
+                <a href="{{ route('products.trash') }}"
                     class="bg-red-600 text-white px-4 py-2 rounded-lg">
                     Trash
                 </a>
@@ -76,7 +76,7 @@
                     <div class="flex justify-between items-center mb-6">
 
                         <h2 class="text-2xl font-bold">
-                            Company List
+                            Products List
                         </h2>                        
 
                     </div>
@@ -90,19 +90,19 @@
 
                     
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-                        <form class="flex flex-1 gap-3"> 
-                            <input type="text" name="search" value="{{ $search }}" placeholder="Search by name, email or phone..." class="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"> 
+                        <form method="GET" action="{{ route('products.index') }}" class="flex flex-1 gap-3"> 
+                            <input type="text" name="search" value="{{ $search }}" placeholder="Search Product..." class="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"> 
                             <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-lg"> Search </button> 
                         </form> 
                         <div class="flex gap-3"> 
-                            <a href="{{ route('companies.export.excel',request()->query()) }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"> 
+                            <a href="{{ route('products.export.excel', ['search' => request('search')]) }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"> 
                                 Excel 
                             </a> 
-                            <a href="{{ route('companies.export.pdf') }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"> 
+                            <a href="{{ route('products.export.pdf', ['search' => request('search')]) }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"> 
                                 PDF 
                             </a> 
-                            <a href="{{ route('companies.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg"> 
-                                + Add Customer 
+                            <a href="{{ route('products.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg"> 
+                                + Add Product 
                             </a> 
                         </div> 
                     </div>
@@ -118,15 +118,21 @@
 
                                     <th class="border px-3 py-2">#</th>
 
-                                    <th class="border px-3 py-2">Logo</th>
+                                    <th class="border px-3 py-2">Image</th>
 
-                                    <th class="border px-3 py-2">Company</th>
+                                    <th class="border px-3 py-2">SKU</th>
 
-                                    <th class="border px-3 py-2">Contact</th>
+                                    <th class="border px-3 py-2">Name</th>
 
-                                    <th class="border px-3 py-2">Email</th>
+                                    <th class="border px-3 py-2">Category</th>
 
-                                    <th class="border px-3 py-2">Phone</th>
+                                    <th class="border px-3 py-2">Brand</th>
+
+                                    <th class="border px-3 py-2">Cost</th>
+
+                                    <th class="border px-3 py-2">Price</th>
+
+                                    <th class="border px-3 py-2">Stock</th>
 
                                     <th class="border px-3 py-2">Status</th>
 
@@ -138,26 +144,26 @@
 
                             <tbody>
 
-                                @forelse($companies as $company)
+                                @forelse($products as $product)
 
                                 <tr>
 
                                     <td class="border p-3">
-                                        {{ $company->id }}
+                                        {{ $product->id }}
                                     </td>
 
                                     <td class="border p-3">
 
-                                        @if($company->logo)
+                                        @if($product->image_url)
 
                                             <img
-                                                src="{{ asset('storage/'.$company->logo) }}"
+                                                src="{{ $product->image_url }}"
                                                 class="w-14 h-14 rounded object-cover border">
 
                                         @else
 
                                             <span class="text-gray-400">
-                                                No Logo
+                                                No Image
                                             </span>
 
                                         @endif
@@ -166,51 +172,66 @@
 
                                     <td class="border p-3">
 
-                                        <strong>
-                                            {{ $company->company_name }}
-                                        </strong>
-
-                                        <br>
-
-                                        <small class="text-gray-500">
-                                            {{ $company->company_code }}
-                                        </small>
+                                        {{ $product->sku }}
 
                                     </td>
 
                                     <td class="border p-3">
-                                        {{ $company->contact_person }}
+                                        {{ $product->product_name }}
                                     </td>
 
                                     <td class="border p-3">
-                                        {{ $company->email }}
+                                        {{ $product->category }}
                                     </td>
 
                                     <td class="border p-3">
-                                        {{ $company->phone }}
+                                        {{ $product->brand }}
                                     </td>
 
                                     <td class="border p-3">
 
-                                        @if($company->status=='Active')
+                                        ₹ {{ number_format($product->cost_price,2) }}
 
-                                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded">
-                                                Active
-                                            </span>
+                                    </td>
+
+                                    <td class="border p-3">
+
+                                        ₹ {{ number_format($product->selling_price,2) }}
+
+                                    </td>
+
+                                    <td class="border p-3">
+
+                                        {{ $product->stock }}
+
+                                    </td>
+
+                                    <td class="border p-3">
+
+                                        @if($product->status=="Active")
+
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded">
+
+                                        Active
+
+                                        </span>
 
                                         @else
 
-                                            <span class="bg-red-100 text-red-700 px-2 py-1 rounded">
-                                                Inactive
-                                            </span>
+                                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded">
+
+                                        Inactive
+
+                                        </span>
 
                                         @endif
 
                                     </td>
 
+                                    
                                     <td class="border p-3">
 
-                                        <a href="{{ route('companies.edit',$company) }}"
+                                        <a href="{{ route('products.edit',$product) }}"
                                            class="text-blue-600 font-semibold">
                                             Edit
                                         </a>
@@ -218,7 +239,7 @@
                                         |
 
                                         <form
-                                            action="{{ route('companies.destroy',$company) }}"
+                                            action="{{ route('products.destroy',$product) }}"
                                             method="POST"
                                             class="inline">
 
@@ -226,7 +247,7 @@
                                             @method('DELETE')
 
                                             <button
-                                                onclick="return confirm('Delete Company?')"
+                                                onclick="return confirm('Delete Product?')"
                                                 class="text-red-600 font-semibold">
 
                                                 Delete
@@ -247,7 +268,7 @@
                                         colspan="8"
                                         class="text-center py-6">
 
-                                        No Companies Found
+                                        No Products Found
 
                                     </td>
 
@@ -263,7 +284,7 @@
 
                     <div class="mt-5">
 
-                        {{ $companies->links() }}
+                        {{ $products->links() }}
 
                     </div>
 
