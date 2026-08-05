@@ -110,6 +110,19 @@ Route::middleware('auth')->group(function () {
         [LeadController::class,'forceDelete']
     )->name('leads.forceDelete');
 
+    Route::get(
+        'leads/export/excel',
+        [LeadController::class, 'exportExcel']
+    )
+    ->name('leads.export.excel');
+
+
+    Route::get(
+        'leads/export/pdf',
+        [LeadController::class, 'exportPdf']
+    )
+    ->name('leads.export.pdf');
+
     Route::resource('/tasks',TaskController::class);
 });
 
