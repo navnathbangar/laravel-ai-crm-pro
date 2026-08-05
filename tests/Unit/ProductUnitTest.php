@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use App\Models\Product;
 use PHPUnit\Framework\TestCase;
 
+
+
 class ProductUnitTest extends TestCase
 {
     public function test_product_object_can_be_created()
