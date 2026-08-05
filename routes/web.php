@@ -93,7 +93,22 @@ Route::middleware('auth')->group(function () {
         [ProductController::class, 'exportPdf']
     )->name('products.export.pdf');
 
-    Route::resource('/leads',LeadController::class);
+    Route::resource('/leads',LeadController::class)->except('show');
+
+    Route::get(
+        'leads/trash',
+        [LeadController::class,'trash']
+    )->name('leads.trash');
+
+    Route::post(
+        'leads/{id}/restore',
+        [LeadController::class,'restore']
+    )->name('leads.restore');
+
+    Route::delete(
+        'leads/{id}/force-delete',
+        [LeadController::class,'forceDelete']
+    )->name('leads.forceDelete');
 
     Route::resource('/tasks',TaskController::class);
 });
