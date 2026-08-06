@@ -29,6 +29,7 @@
         <label class="block font-medium mb-1">Product Name <span class="text-red-500">*</span></label>
         <input type="text"
                name="product_name"
+               id="product_name"
                value="{{ old('product_name', $product->product_name ?? '') }}"
                class="w-full rounded border-gray-300"
                required>
@@ -149,7 +150,37 @@
         @endif
     </div>
 
+    <div>
+        <label class="block font-medium mb-2">
+            Product Gallery
+        </label>
+
+        <input
+            type="file"
+            name="gallery[]"
+            multiple
+            class="w-full border rounded p-2">
+
+            @if(isset($product))
+
+                <div class="grid grid-cols-4 gap-4 mt-4">
+
+                @foreach($product->images as $image)
+
+                    <img
+                        src="{{ asset('storage/'.$image->image) }}"
+                        class="w-24 h-24 rounded border object-cover">
+
+                @endforeach
+
+                </div>
+
+            @endif
+    </div>
+
 </div>
+
+
 
 {{-- Description --}}
 
@@ -164,7 +195,76 @@
     <textarea
         name="description"
         rows="5"
+        id="description"
         class="w-full rounded border-gray-300">{{ old('description', $product->description ?? '') }}</textarea>
+
+    <button
+        type="button"
+        id="generateAI"
+        class="mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+        🤖 Generate AI Description
+    </button>
+</div>
+
+{{-- Meta Title --}}
+<div class="mt-6">
+    <label class="block font-medium mb-1">
+        Meta Title
+    </label>
+
+    <input
+        type="text"
+        name="meta_title"
+        id="meta_title"
+        value="{{ old('meta_title', $product->meta_title ?? '') }}"
+        class="w-full rounded border-gray-300">
+</div>
+
+{{-- Meta Description --}}
+<div class="mt-6">
+    <label class="block font-medium mb-1">
+        Meta Description
+    </label>
+
+    <textarea
+        name="meta_description"
+        id="meta_description"
+        rows="3"
+        class="w-full rounded border-gray-300">{{ old('meta_description', $product->meta_description ?? '') }}</textarea>
+</div>
+<div class="mt-6">
+
+    <label class="block font-medium mb-1">
+
+        Meta Keywords
+
+    </label>
+
+    <textarea
+        name="meta_keywords"
+        id="meta_keywords"
+        rows="2"
+        class="w-full rounded border-gray-300">{{ old('meta_keywords', $product->meta_keywords ?? '') }}</textarea>
+
+</div>
+<div class="mt-6">
+
+    <label class="block font-medium mb-1">
+
+        Tags
+
+    </label>
+
+    <input
+        type="text"
+        name="tags"
+        id="tags"
+        value="{{ old('tags', $product->tags ?? '') }}"
+        class="w-full rounded border-gray-300">
+
+    <small class="text-gray-500">
+        Example: iphone, apple, smartphone, ios
+    </small>
 
 </div>
 
@@ -178,3 +278,50 @@
     </button>
 
 </div>
+<script>
+
+document.getElementById('generateAI').addEventListener('click', function () {
+
+    let button = this;
+    let productName = document.getElementById('product_name').value;
+
+    if (!productName) {
+        alert('Enter product name');
+        return;
+    }
+
+    // Disable button
+    button.disabled = true;
+    button.innerHTML = 'Generating...';
+
+    fetch('/ai/product-description', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            product_name: productName
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('description').value = data.description;
+        document.getElementById('meta_title').value = data.meta_title;
+        document.getElementById('meta_description').value = data.meta_description;
+        document.getElementById('meta_keywords').value = data.meta_keywords;
+        document.getElementById('tags').value = data.tags;
+    })
+    .catch(error => {
+        alert('Something went wrong!');
+        console.error(error);
+    })
+    .finally(() => {
+        // Enable button again
+        button.disabled = false;
+        button.innerHTML = 'Generate AI';
+    });
+
+});
+
+</script>

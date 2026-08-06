@@ -41,7 +41,13 @@ class Product extends Model
 
         'status',
 
-        'created_by'
+        'created_by',
+
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'tags',
+        'ai_generated',
 
     ];
 
@@ -115,6 +121,11 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class,'created_by');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 
 }

@@ -39,7 +39,17 @@ class UpdateProductRequest extends FormRequest
 
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
-            'description' => 'nullable|string',
+            'description' => 'nullable|string',            
+
+            'meta_title' => 'nullable|string',
+
+            'meta_description' => 'nullable|string',
+
+            'meta_keywords' => 'nullable|string',
+
+            'tags' => 'nullable|string',
+
+            'gallery.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
             'status' => 'required|in:Active,Inactive',
 

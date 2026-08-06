@@ -39,6 +39,17 @@ class StoreProductRequest extends FormRequest
 
             'description' => 'nullable|string',
 
+            'meta_title' => 'nullable|string',
+
+            'meta_description' => 'nullable|string',
+
+            'meta_keywords' => 'nullable|string',
+
+            'tags' => 'nullable|string',
+
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'status' => 'required|in:Active,Inactive',
 
         ];

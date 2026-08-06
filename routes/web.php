@@ -8,6 +8,9 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\AISettingController;
+use App\Http\Controllers\GeminiController;
+use App\Http\Controllers\AIProductController;
 
 
 Route::get('/', function () {
@@ -150,6 +153,43 @@ Route::middleware('auth')->group(function () {
         'tasks-export-pdf',
         [TaskController::class, 'exportPdf']
     )->name('tasks.export.pdf');
+
+
+    Route::resource('ai-settings', AISettingController::class)->except('show');
+
+    Route::get(
+        'ai-settings/trash',
+        [AISettingController::class,'trash']
+    )->name('ai-settings.trash');
+
+    Route::post(
+        'ai-settings/{id}/restore',
+        [AISettingController::class,'restore']
+    )->name('ai-settings.restore');
+
+    Route::delete(
+        'ai-settings/{id}/force-delete',
+        [AISettingController::class,'forceDelete']
+    )->name('ai-settings.forceDelete');
+
+    Route::post(
+        'ai-settings/test-connection',
+        [AISettingController::class,'testConnection']
+    )->name('ai-settings.test');
+
+    Route::post(
+        '/ai-settings/testGemini',
+        [AISettingController::class, 'testConnectionGemini']
+    )->name('ai-settings.testGemini');
+
+    Route::get('/gemini-test', [GeminiController::class, 'test']);
+
+    Route::post(
+        '/ai/product-description',
+        [AIProductController::class, 'generateDescription']
+    )->name('ai.product.description');
+
+    
 });
 
 require __DIR__.'/auth.php';

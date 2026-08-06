@@ -74,8 +74,21 @@ class ProductController extends Controller
         }
 
         $data['created_by'] = auth()->id();
+        $data['ai_generated'] = !empty($request->description);
+        $product = Product::create($data);
 
-        Product::create($data);
+        if ($request->hasFile('gallery')) {
+
+            foreach ($request->file('gallery') as $image) {
+
+                $path = $image->store('products/gallery', 'public');
+
+                $product->images()->create([
+                    'image' => $path
+                ]);
+
+            }
+        }
 
         return redirect()
 
@@ -104,6 +117,8 @@ class ProductController extends Controller
             $data['image'] = $request->file('image')
                                     ->store('products','public');
         }
+
+        $data['ai_generated'] = !empty($request->description);
 
         $product->update($data);
 
