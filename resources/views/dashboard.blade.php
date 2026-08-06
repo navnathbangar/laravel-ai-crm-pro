@@ -25,30 +25,32 @@
                 <div class="bg-white rounded-xl shadow p-5">
                     <h4 class="text-gray-500 text-sm">Customers</h4>
                     <h2 class="text-3xl font-bold text-blue-600">
-                        0
+                        {{ $customers }}
                     </h2>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-5">
                     <h4 class="text-gray-500 text-sm">Companies</h4>
                     <h2 class="text-3xl font-bold text-green-600">
-                        0
+                        {{ $companies }}
                     </h2>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-5">
                     <h4 class="text-gray-500 text-sm">Products</h4>
                     <h2 class="text-3xl font-bold text-purple-600">
-                        0
+                        {{ $products }}
                     </h2>
                 </div>
 
                 <div class="bg-white rounded-xl shadow p-5">
                     <h4 class="text-gray-500 text-sm">Leads</h4>
                     <h2 class="text-3xl font-bold text-red-600">
-                        0
+                        {{ $leads }}
                     </h2>
                 </div>
+
+                
 
             </div>
 
@@ -62,17 +64,17 @@
 
                     <div class="flex flex-wrap gap-3">
 
-                        <a href="#"
+                        <a href="{{ route('customers.create') }}"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
                             Add Customer
                         </a>
 
-                        <a href="#"
+                        <a href="{{ route('companies.create') }}"
                             class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg">
                             Add Company
                         </a>
 
-                        <a href="#"
+                        <a href="{{ route('products.create') }}"
                             class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg">
                             Add Product
                         </a>
